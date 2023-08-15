@@ -1,0 +1,49 @@
+version: "3.4"
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    volumes:
+      # - php_socket:/var/run/php
+      - ./:/var/www
+      # - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+
+  mysql:
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: 'quest'
+      MYSQL_USER: 'quest'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'quest'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'quest'
+
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: quest
+      POSTGRES_PASSWORD: quest
+      POSTGRES_DB: quest
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./:/var/www/
+    ports:
+      - "8080:80"
