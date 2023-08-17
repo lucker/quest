@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\QuestTeamParticipant;
 use App\Repository\QuestQuestionRepository;
 use App\Repository\QuestRepository;
+use App\Repository\QuestTeamParticipantRepository;
 use App\Repository\QuestTeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class QuestController extends AbstractController
 {
+    #[Route('/test', name: 'quest_test')]
+    public function test(): Response
+    {
+        return new JsonResponse([
+            'message' => 'Done',
+        ],
+            Response::HTTP_OK
+        );
+
+    }
+
     #[Route('/quest/generate-user-link/{teamId}/{questId}', name: 'quest_generate-user-link')]
     public function generateUserLink(
         int $teamId,
@@ -56,27 +68,39 @@ final class QuestController extends AbstractController
     }
 
     #[Route('/quest/{hash}', name: 'quest_index')]
-    public function index(string $hash, Request $request, QuestQuestionRepository $questQuestionRepository): Response
+    public function index(
+        string $hash,
+        Request $request,
+        QuestTeamParticipantRepository $questTeamParticipantRepository
+    ): Response
     {
-        $questQuestion = $questQuestionRepository->findOneBy([
-            'finished' => null
-        ], [
-            'number' => 'ASC'
+        $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
+            'hash' => $hash
         ]);
+        $questQuestion = $questTeamParticipant->getQuestQuestion();
+
 
         return $this->render('quest/index.html.twig', [
-            'question' => $questQuestion
+            'questTeamParticipant' => $questTeamParticipant,
+            'questQuestion' => $questQuestion
         ]);
     }
 
-    #[Route('/check-answer/{answer}', name: 'quest_check_answer')]
-    public function checkAnswer(string $answer)
+    #[Route('/check-answer', name: 'quest_check_answer')]
+    public function checkAnswer(
+        Request $request,
+        QuestTeamParticipantRepository $questTeamParticipantRepository
+    ): Response
     {
+        $answer = $request->get("answer");
+        $hash = $request->get("hash");
+        $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
+            'hash' => $hash
+        ]);
+
         return new JsonResponse([
-            'message' => 'There are no jobs in the database',
-        ],
-             Response::HTTP_OK
-        );
+            'answer' => $answer,
+        ],Response::HTTP_OK);
     }
 
     function generateRandomString($length = 10) {

@@ -4,13 +4,17 @@
     <form id="formId">
         <div class="row">
             <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="">
+                <input type="text" name="answer" class="form-control" placeholder="">
+                <input type="hidden" name="hash" value="{{ questTeamParticipant.hash }}">
             </div>
             <div class="col-sm-2">
                 <input id="submitButton" type="submit" class="btn btn-primary" value="Відповісти"/>
             </div>
         </div>
     </form>
+    <div class="col-sm-12">
+        {{ questQuestion.question }}
+    </div>
     <script>
         $("form").on("submit", function (e) {
             var dataString = $(this).serialize();
