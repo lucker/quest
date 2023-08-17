@@ -51,12 +51,12 @@ final class Version20230816114050 extends AbstractMigration
                 quest_question_id int,
                 PRIMARY KEY (id)
             );
-            CREATE TABLE quest_team_answers (
+            CREATE TABLE quest_team_answer (
                 id int NOT NULL AUTO_INCREMENT,
                 quest_team_participant_id int,
                 quest_question_id int NOT NULL,
                 answer varchar(255),
-                correct boolean,
+                answer_time DATETIME,
                 PRIMARY KEY (id)
             ); 
         ';
@@ -72,7 +72,7 @@ final class Version20230816114050 extends AbstractMigration
             DROP TABLE quest_answer;
             DROP TABLE quest_team;
             DROP TABLE quest_team_participant;
-            DROP TABLE quest_team_answers;
+            DROP TABLE quest_team_answer;
         ';
         $this->connection->executeQuery($sql);
     }

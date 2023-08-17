@@ -98,6 +98,7 @@ final class QuestController extends AbstractController
             'hash' => $hash
         ]);
 
+
         return new JsonResponse([
             'answer' => $answer,
         ],Response::HTTP_OK);
