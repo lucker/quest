@@ -30,7 +30,6 @@ final class Version20230816114050 extends AbstractMigration
                 quest_id int,
                 number int,
                 question text,
-                finished DATETIME,
                 PRIMARY KEY (id)
             );
             CREATE TABLE quest_answer (

@@ -55,8 +55,8 @@ final class QuestController extends AbstractController
 
     }
 
-    #[Route('/quest', name: 'quest_index')]
-    public function index(Request $request, QuestQuestionRepository $questQuestionRepository): Response
+    #[Route('/quest/{hash}', name: 'quest_index')]
+    public function index(string $hash, Request $request, QuestQuestionRepository $questQuestionRepository): Response
     {
         $questQuestion = $questQuestionRepository->findOneBy([
             'finished' => null
@@ -69,19 +69,14 @@ final class QuestController extends AbstractController
         ]);
     }
 
-    #[Route('/check-answer', name: 'quest_check_answer')]
+    #[Route('/check-answer/{answer}', name: 'quest_check_answer')]
     public function checkAnswer(string $answer)
     {
-        return new JsonResponse(
-            [
-                'message' => 'There are no jobs in the database',
-            ],
-                 Response::HTTP_OK
-            );
-
-        /*return $this->render('quest/answer.php.twig', [
-            'fdsf' => 1
-        ]);*/
+        return new JsonResponse([
+            'message' => 'There are no jobs in the database',
+        ],
+             Response::HTTP_OK
+        );
     }
 
     function generateRandomString($length = 10) {

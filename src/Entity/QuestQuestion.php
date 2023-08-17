@@ -26,9 +26,6 @@ class QuestQuestion
     #[ORM\Column(type: Types::STRING)]
     private string $question;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private \DateTime $finished;
-
     /**
      * @return int
      */
@@ -61,13 +58,6 @@ class QuestQuestion
         return $this->quest;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getFinished(): \DateTime
-    {
-        return $this->finished;
-    }
 
     /**
      * @param int $number
@@ -93,11 +83,4 @@ class QuestQuestion
         $this->quest = $quest;
     }
 
-    /**
-     * @param \DateTime $finished
-     */
-    public function setFinished(\DateTime $finished): void
-    {
-        $this->finished = $finished;
-    }
 }
