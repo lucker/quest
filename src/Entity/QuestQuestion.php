@@ -1,15 +1,15 @@
 <?php
 namespace App\Entity;
 
-use App\Repository\QuestQuestionsRepository;
+use App\Repository\QuestQuestionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: QuestQuestionsRepository::class)]
-#[ORM\Table(name: 'quest_questions')]
-class QuestQuestions
+#[ORM\Entity(repositoryClass: QuestQuestionRepository::class)]
+#[ORM\Table(name: 'quest_question')]
+class QuestQuestion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

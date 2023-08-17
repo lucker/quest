@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>{% block title %}Symfony Demo application{% endblock %}</title>
         <link rel="alternate" type="application/rss+xml" title="{{ 'rss.title'|trans }}" href="{{ path('blog_rss') }}">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         {#
             Those two blocks defines frontend entrypoint for CSS and JavaScript assets
             See https://symfony.com/doc/current/frontend.html
@@ -127,20 +127,10 @@
         <div class="container body-container">
             {% block body %}
                 <div class="row">
-                    <div id="main" class="col-sm-9">
+                    <div id="main" class="col-sm-12">
                         {{ include('default/_flash_messages.html.twig') }}
 
                         {% block main %}{% endblock %}
-                    </div>
-
-                    <div id="sidebar" class="col-sm-3">
-                        {% block sidebar %}
-                            {{ render_esi(controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController::templateAction', {
-                                'template': 'blog/about.html.twig',
-                                'sharedAge': 600,
-                                '_locale': app.request.locale
-                            })) }}
-                        {% endblock %}
                     </div>
                 </div>
             {% endblock %}

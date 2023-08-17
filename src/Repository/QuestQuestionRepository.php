@@ -1,14 +1,14 @@
 <?php
 namespace App\Repository;
 
-use App\Entity\QuestQuestions;
+use App\Entity\QuestQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class QuestQuestionsRepository extends ServiceEntityRepository
+class QuestQuestionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, QuestQuestions::class);
+        parent::__construct($registry, QuestQuestion::class);
     }
 }
