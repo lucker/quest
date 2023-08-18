@@ -106,6 +106,7 @@ final class QuestController extends AbstractController
     {
         $answer = $request->get("answer");
         $hash = $request->get("hash");
+        $correct = false;
         $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
             'hash' => $hash
         ]);
@@ -122,6 +123,7 @@ final class QuestController extends AbstractController
 
             foreach ($questAnswerVariants as $questAnswerVariant) {
                 if ($questAnswerVariant->getAnswer() == $answer) {
+                    $correct = true;
                     $questTeamParticipantAnswer = $questTeamParticipantAnswerRepository->findOneBy([
                         'questAnswer' => $questAnswer
                     ]);
@@ -159,6 +161,7 @@ final class QuestController extends AbstractController
 
         return new JsonResponse([
             'answer' => $answer,
+            'correct' => $correct,
             'reload' => true
         ],Response::HTTP_OK);
     }

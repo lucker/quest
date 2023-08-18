@@ -12,6 +12,12 @@
             </div>
         </div>
     </form>
+    <div id="correct_answers">
+
+    </div>
+    <div id="wrong_answers">
+
+    </div>
     <div class="col-sm-12">
         {{ questQuestion.question }}
     </div>
@@ -23,8 +29,16 @@
                 type: "POST",
                 url: "/en/check-answer",
                 data: dataString,
-                success: function () {
-                    location.reload();
+                success: function (data, status) {
+                    console.log(data);
+                    let correct = data.correct;
+                    let answer = data.answer;
+                    if (correct) {
+                        $("#correct_answers").append('<div class="text-success">' + answer + '</div>')
+                    } else {
+                        $("#wrong_answers").html('<div class="text-danger">' + answer  + '</div>')
+                    }
+                    //location.reload();
                 }
             });
             e.preventDefault();
