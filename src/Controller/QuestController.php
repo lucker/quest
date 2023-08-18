@@ -2,8 +2,12 @@
 namespace App\Controller;
 
 use App\Entity\QuestTeamParticipant;
+use App\Entity\QuestTeamParticipantAnswer;
+use App\Repository\QuestAnswerRepository;
+use App\Repository\QuestAnswerVariantRepository;
 use App\Repository\QuestQuestionRepository;
 use App\Repository\QuestRepository;
+use App\Repository\QuestTeamParticipantAnswerRepository;
 use App\Repository\QuestTeamParticipantRepository;
 use App\Repository\QuestTeamRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -79,6 +83,9 @@ final class QuestController extends AbstractController
         ]);
         $questQuestion = $questTeamParticipant->getQuestQuestion();
 
+        if ($questQuestion == null) {
+            return $this->render('quest/success.html.twig');
+        }
 
         return $this->render('quest/index.html.twig', [
             'questTeamParticipant' => $questTeamParticipant,
@@ -88,8 +95,13 @@ final class QuestController extends AbstractController
 
     #[Route('/check-answer', name: 'quest_check_answer')]
     public function checkAnswer(
+        EntityManagerInterface $entityManager,
         Request $request,
-        QuestTeamParticipantRepository $questTeamParticipantRepository
+        QuestTeamParticipantRepository $questTeamParticipantRepository,
+        QuestAnswerRepository $questAnswerRepository,
+        QuestAnswerVariantRepository $questAnswerVariantRepository,
+        QuestTeamParticipantAnswerRepository $questTeamParticipantAnswerRepository,
+        QuestQuestionRepository $questQuestionRepository
     ): Response
     {
         $answer = $request->get("answer");
@@ -97,10 +109,57 @@ final class QuestController extends AbstractController
         $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
             'hash' => $hash
         ]);
+        $questQuestion = $questTeamParticipant->getQuestQuestion();
+
+        $questAnswers = $questAnswerRepository->findBy([
+            'questQuestion' => $questQuestion
+        ]);
+
+        foreach ($questAnswers as $questAnswer) {
+            $questAnswerVariants = $questAnswerVariantRepository->findBy([
+                'questAnswer' => $questAnswer
+            ]);
+
+            foreach ($questAnswerVariants as $questAnswerVariant) {
+                if ($questAnswerVariant->getAnswer() == $answer) {
+                    $questTeamParticipantAnswer = $questTeamParticipantAnswerRepository->findOneBy([
+                        'questAnswer' => $questAnswer
+                    ]);
+                    if ($questTeamParticipantAnswer == null) {
+                        $questTeamParticipantAnswer = new QuestTeamParticipantAnswer();
+                        $questTeamParticipantAnswer->setAnswer($answer);
+                        $questTeamParticipantAnswer->setQuestTeamParticipant($questTeamParticipant);
+                        $questTeamParticipantAnswer->setQuestQuestion($questQuestion);
+                        $questTeamParticipantAnswer->setAnswerTime(new \DateTime());
+                        $questTeamParticipantAnswer->setQuestAnswer($questAnswer);
+
+                        $entityManager->persist($questTeamParticipantAnswer);
+                        $entityManager->flush();
+                    }
+                }
+            }
+        }
+
+        $questTeamParticipantAnswers = $questTeamParticipantAnswerRepository->findBy([
+            'questQuestion' => $questQuestion
+        ]);
+
+        if (count($questTeamParticipantAnswers) == count($questAnswers)) {
+            $nextQuestQuestion = $questQuestionRepository->findOneBy([
+                'quest' => $questTeamParticipant->getQuest(),
+                'number' => $questQuestion->getNumber() + 1
+            ]);
+            $questTeamParticipant->setQuestQuestion($nextQuestQuestion);
+
+            $entityManager->persist($questTeamParticipant);
+            $entityManager->flush();
+
+        }
 
 
         return new JsonResponse([
             'answer' => $answer,
+            'reload' => true
         ],Response::HTTP_OK);
     }
 

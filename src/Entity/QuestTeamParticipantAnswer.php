@@ -5,8 +5,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'quest_team_answer')]
-class QuestTeamAnswer
+#[ORM\Table(name: 'quest_team_participant_answer')]
+class QuestTeamParticipantAnswer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,6 +20,10 @@ class QuestTeamAnswer
     #[ORM\ManyToOne(targetEntity: QuestQuestion::class)]
     #[ORM\JoinColumn(nullable: false)]
     private QuestQuestion $questQuestion;
+
+    #[ORM\OneToOne(targetEntity: QuestAnswer::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private QuestAnswer $questAnswer;
 
     #[ORM\Column(type: Types::STRING)]
     private string $answer;
@@ -97,5 +101,21 @@ class QuestTeamAnswer
     public function setAnswerTime(\DateTime $answerTime): void
     {
         $this->answerTime = $answerTime;
+    }
+
+    /**
+     * @return QuestAnswer
+     */
+    public function getQuestAnswer(): QuestAnswer
+    {
+        return $this->questAnswer;
+    }
+
+    /**
+     * @param QuestAnswer $questAnswer
+     */
+    public function setQuestAnswer(QuestAnswer $questAnswer): void
+    {
+        $this->questAnswer = $questAnswer;
     }
 }

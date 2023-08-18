@@ -17,6 +17,27 @@ class QuestAnswer
     #[ORM\JoinColumn(nullable: false)]
     private QuestQuestion $questQuestion;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $answer;
+    /**
+     * @param QuestQuestion $questQuestion
+     */
+    public function setQuestQuestion(QuestQuestion $questQuestion): void
+    {
+        $this->questQuestion = $questQuestion;
+    }
+
+    /**
+     * @return QuestQuestion
+     */
+    public function getQuestQuestion(): QuestQuestion
+    {
+        return $this->questQuestion;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 }

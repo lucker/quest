@@ -26,8 +26,8 @@ class QuestTeamParticipant
     private Quest $quest;
 
     #[ORM\OneToOne(targetEntity: QuestQuestion::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private QuestQuestion $questQuestion;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?QuestQuestion $questQuestion;
 
     /**
      * @return int
@@ -62,9 +62,9 @@ class QuestTeamParticipant
     }
 
     /**
-     * @return QuestQuestion
+     * @return QuestQuestion|null
      */
-    public function getQuestQuestion(): QuestQuestion
+    public function getQuestQuestion(): ?QuestQuestion
     {
         return $this->questQuestion;
     }
@@ -86,9 +86,10 @@ class QuestTeamParticipant
     }
 
     /**
-     * @param QuestQuestion $questQuestion
+     * @param QuestQuestion|null $questQuestion
+     * @return void
      */
-    public function setQuestQuestion(QuestQuestion $questQuestion): void
+    public function setQuestQuestion(?QuestQuestion $questQuestion): void
     {
         $this->questQuestion = $questQuestion;
     }

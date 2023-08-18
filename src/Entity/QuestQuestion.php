@@ -58,7 +58,6 @@ class QuestQuestion
         return $this->quest;
     }
 
-
     /**
      * @param int $number
      */
@@ -82,5 +81,4 @@ class QuestQuestion
     {
         $this->quest = $quest;
     }
-
 }
