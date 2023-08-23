@@ -5,33 +5,33 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'quest_answer_variant')]
-class QuestAnswerVariant
+#[ORM\Table(name: 'quest_question_answer_variant')]
+class QuestQuestionAnswerVariant
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: QuestAnswer::class)]
+    #[ORM\ManyToOne(targetEntity: QuestQuestionAnswer::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private QuestAnswer $questAnswer;
+    private QuestQuestionAnswer $questAnswer;
 
     #[ORM\Column(type: Types::STRING)]
     private string $answer;
 
     /**
-     * @param QuestAnswer $questAnswer
+     * @param QuestQuestionAnswer $questAnswer
      */
-    public function setQuestAnswer(QuestAnswer $questAnswer): void
+    public function setQuestAnswer(QuestQuestionAnswer $questAnswer): void
     {
         $this->questAnswer = $questAnswer;
     }
 
     /**
-     * @return QuestAnswer
+     * @return QuestQuestionAnswer
      */
-    public function getQuestAnswer(): QuestAnswer
+    public function getQuestAnswer(): QuestQuestionAnswer
     {
         return $this->questAnswer;
     }

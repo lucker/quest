@@ -5,8 +5,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'quest_answer')]
-class QuestAnswer
+#[ORM\Table(name: 'quest_question_answer')]
+class QuestQuestionAnswer
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -37,6 +37,11 @@ class QuestAnswer
      * @return int
      */
     public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function __toString(): string
     {
         return $this->id;
     }

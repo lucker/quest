@@ -2,6 +2,8 @@
 namespace App\Entity;
 
 use App\Repository\QuestQuestionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,6 +27,15 @@ class QuestQuestion
 
     #[ORM\Column(type: Types::STRING)]
     private string $question;
+
+    #[ORM\OneToMany(targetEntity: QuestQuestionAnswer::class, mappedBy: 'questQuestion', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'quest_question_answer')]
+    private Collection $answers;
+
+    public function __construct()
+    {
+        $this->answers = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -81,6 +92,37 @@ class QuestQuestion
     {
         $this->quest = $quest;
     }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getAnswers(): ArrayCollection|Collection
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param ArrayCollection|Collection $answers
+     */
+    public function setAnswers(ArrayCollection|Collection $answers): void
+    {
+        $this->answers = $answers;
+    }
+
+    /**
+     * @param QuestQuestionAnswer $answers
+     * @return void
+     */
+    public function addAnswers(QuestQuestionAnswer $answers): void
+    {
+        $answers->setQuestQuestion($this);
+
+        if (!$this->answers->contains($answers)) {
+            $this->answers->add($answers);
+        }
+    }
+
+
 
     public function __toString(): string
     {

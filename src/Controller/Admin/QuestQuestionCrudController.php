@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\QuestQuestion;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -19,9 +20,11 @@ class QuestQuestionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            IdField::new('id')->hideOnForm(),
             IdField::new('number'),
             TextEditorField::new('question'),
-            AssociationField::new('quest')
+            AssociationField::new('quest'),
+            CollectionField::new('answers')
             //TextEditorField::new('description'),
         ];
     }

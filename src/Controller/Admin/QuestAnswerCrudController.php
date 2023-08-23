@@ -2,14 +2,14 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\QuestAnswer;
+use App\Entity\QuestQuestionAnswer;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class QuestAnswerCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return QuestAnswer::class;
+        return QuestQuestionAnswer::class;
     }
 
     /*

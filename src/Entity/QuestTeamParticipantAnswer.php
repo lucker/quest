@@ -21,9 +21,9 @@ class QuestTeamParticipantAnswer
     #[ORM\JoinColumn(nullable: false)]
     private QuestQuestion $questQuestion;
 
-    #[ORM\OneToOne(targetEntity: QuestAnswer::class)]
+    #[ORM\OneToOne(targetEntity: QuestQuestionAnswer::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private QuestAnswer $questAnswer;
+    private QuestQuestionAnswer $questAnswer;
 
     #[ORM\Column(type: Types::STRING)]
     private string $answer;
@@ -104,17 +104,17 @@ class QuestTeamParticipantAnswer
     }
 
     /**
-     * @return QuestAnswer
+     * @return QuestQuestionAnswer
      */
-    public function getQuestAnswer(): QuestAnswer
+    public function getQuestAnswer(): QuestQuestionAnswer
     {
         return $this->questAnswer;
     }
 
     /**
-     * @param QuestAnswer $questAnswer
+     * @param QuestQuestionAnswer $questAnswer
      */
-    public function setQuestAnswer(QuestAnswer $questAnswer): void
+    public function setQuestAnswer(QuestQuestionAnswer $questAnswer): void
     {
         $this->questAnswer = $questAnswer;
     }

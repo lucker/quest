@@ -32,14 +32,14 @@ final class Version20230816114050 extends AbstractMigration
                 question text,
                 PRIMARY KEY (id)
             );
-            CREATE TABLE quest_answer (
+            CREATE TABLE quest_question_answer (
                 id int NOT NULL AUTO_INCREMENT,
                 quest_question_id int NOT NULL,
                 PRIMARY KEY (id)
             );
-            CREATE TABLE quest_answer_variant (
+            CREATE TABLE quest_question_answer_variant (
                 id int NOT NULL AUTO_INCREMENT,
-                quest_answer_id int NOT NULL,
+                quest_question_answer_id int NOT NULL,
                 answer varchar(255),
                 PRIMARY KEY (id)
             );
@@ -75,8 +75,8 @@ final class Version20230816114050 extends AbstractMigration
         $sql = '
             DROP TABLE quest; 
             DROP TABLE quest_question;
-            DROP TABLE quest_answer;
-            DROP TABLE quest_answer_variant;
+            DROP TABLE quest_question_answer;
+            DROP TABLE quest_question_answer_variant;
             DROP TABLE quest_team;
             DROP TABLE quest_team_participant;
             DROP TABLE quest_team_participant_answer;

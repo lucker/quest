@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Quest;
-use App\Entity\QuestAnswer;
+use App\Entity\QuestQuestionAnswer;
 use App\Entity\QuestQuestion;
 use App\Entity\QuestTeam;
 use App\Entity\QuestTeamParticipant;
@@ -53,7 +53,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Квесты', 'fas fa-list', Quest::class);
         yield MenuItem::linkToCrud('Вопросы', 'fas fa-list', QuestQuestion::class);
-        yield MenuItem::linkToCrud('Квесты ответы', 'fas fa-list', QuestAnswer::class);
+        yield MenuItem::linkToCrud('Квесты ответы', 'fas fa-list', QuestQuestionAnswer::class);
         yield MenuItem::linkToCrud('Команды', 'fas fa-list', QuestTeam::class);
         yield MenuItem::linkToCrud('Участники квеста', 'fas fa-list', QuestTeamParticipant::class);
 
