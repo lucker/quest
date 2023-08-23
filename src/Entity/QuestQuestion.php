@@ -81,4 +81,9 @@ class QuestQuestion
     {
         $this->quest = $quest;
     }
+
+    public function __toString(): string
+    {
+        return $this->quest. ' ' . $this->number;
+    }
 }

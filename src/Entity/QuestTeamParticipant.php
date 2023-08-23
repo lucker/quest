@@ -101,4 +101,9 @@ class QuestTeamParticipant
     {
         $this->questTeam = $questTeam;
     }
+
+    public function getUrl(): string
+    {
+        return '/en/quest/'. $this->hash;
+    }
 }

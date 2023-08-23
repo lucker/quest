@@ -21,7 +21,10 @@ class QuestTeamParticipantCrudController extends AbstractCrudController
     {
         return [
             AssociationField::new('questTeam'),
-            AssociationField::new('quest')
+            AssociationField::new('quest'),
+            AssociationField::new('questQuestion'),
+            TextField::new('hash'),
+            TextField::new('url')->hideOnForm()
         ];
     }
 }
