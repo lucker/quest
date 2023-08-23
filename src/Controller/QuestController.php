@@ -118,7 +118,7 @@ final class QuestController extends AbstractController
 
         foreach ($questAnswers as $questAnswer) {
             $questAnswerVariants = $questAnswerVariantRepository->findBy([
-                'questAnswer' => $questAnswer
+                'questQuestionAnswer' => $questAnswer
             ]);
 
             foreach ($questAnswerVariants as $questAnswerVariant) {
