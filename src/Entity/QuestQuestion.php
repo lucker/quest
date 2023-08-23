@@ -32,9 +32,14 @@ class QuestQuestion
     #[ORM\JoinTable(name: 'quest_question_answer')]
     private Collection $answers;
 
+    #[ORM\OneToMany(targetEntity: QuestQuestionHint::class, mappedBy: 'questQuestion', orphanRemoval: true, cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'quest_question_hint')]
+    private Collection $hints;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->hints = new ArrayCollection();
     }
 
     /**
@@ -102,14 +107,6 @@ class QuestQuestion
     }
 
     /**
-     * @param ArrayCollection|Collection $answers
-     */
-    /*public function setAnswers(ArrayCollection|Collection $answers): void
-    {
-        $this->answers = $answers;
-    }*/
-
-    /**
      * @param QuestQuestionAnswer $answer
      * @return void
      */
@@ -131,6 +128,39 @@ class QuestQuestion
         $this->answers->removeElement($answer);
     }
 
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getHints(): ArrayCollection|Collection
+    {
+        return $this->hints;
+    }
+
+    /**
+     * @param QuestQuestionHint $hint
+     * @return void
+     */
+    public function addHint(QuestQuestionHint $hint): void
+    {
+        $hint->setQuestQuestion($this);
+
+        if (!$this->hints->contains($hint)) {
+            $this->hints->add($hint);
+        }
+    }
+
+    /**
+     * @param QuestQuestionAnswer $hint
+     * @return void
+     */
+    public function removeHint(QuestQuestionAnswer $hint): void
+    {
+        $this->hints->removeElement($hint);
+    }
+
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->quest. ' ' . $this->number;

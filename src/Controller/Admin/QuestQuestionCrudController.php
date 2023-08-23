@@ -26,6 +26,8 @@ class QuestQuestionCrudController extends AbstractCrudController
             AssociationField::new('quest'),
             CollectionField::new('answers')
                 ->useEntryCrudForm(QuestAnswerCrudController::class),
+            CollectionField::new('hints')
+                ->useEntryCrudForm(QuestQuestionHintCrudController::class),
         ];
     }
 }
