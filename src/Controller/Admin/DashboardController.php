@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Quest;
 use App\Entity\QuestQuestionAnswer;
 use App\Entity\QuestQuestion;
+use App\Entity\QuestQuestionAnswerVariant;
 use App\Entity\QuestTeam;
 use App\Entity\QuestTeamParticipant;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -56,6 +57,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Квесты ответы', 'fas fa-list', QuestQuestionAnswer::class);
         yield MenuItem::linkToCrud('Команды', 'fas fa-list', QuestTeam::class);
         yield MenuItem::linkToCrud('Участники квеста', 'fas fa-list', QuestTeamParticipant::class);
-
+        yield MenuItem::linkToCrud('Варианты ответа', 'fas fa-list', QuestQuestionAnswerVariant::class);
     }
 }

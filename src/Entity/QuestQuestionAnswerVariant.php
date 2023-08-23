@@ -15,25 +15,25 @@ class QuestQuestionAnswerVariant
 
     #[ORM\ManyToOne(targetEntity: QuestQuestionAnswer::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private QuestQuestionAnswer $questAnswer;
+    private QuestQuestionAnswer $questQuestionAnswer;
 
     #[ORM\Column(type: Types::STRING)]
     private string $answer;
 
     /**
-     * @param QuestQuestionAnswer $questAnswer
+     * @param QuestQuestionAnswer $questQuestionAnswer
      */
-    public function setQuestAnswer(QuestQuestionAnswer $questAnswer): void
+    public function setQuestQuestionAnswer(QuestQuestionAnswer $questQuestionAnswer): void
     {
-        $this->questAnswer = $questAnswer;
+        $this->questQuestionAnswer = $questQuestionAnswer;
     }
 
     /**
      * @return QuestQuestionAnswer
      */
-    public function getQuestAnswer(): QuestQuestionAnswer
+    public function getQuestQuestionAnswer(): QuestQuestionAnswer
     {
-        return $this->questAnswer;
+        return $this->questQuestionAnswer;
     }
 
     /**
@@ -58,5 +58,10 @@ class QuestQuestionAnswerVariant
     public function setAnswer(string $answer): void
     {
         $this->answer = $answer;
+    }
+
+    public function __toString(): string
+    {
+        return $this->answer;
     }
 }

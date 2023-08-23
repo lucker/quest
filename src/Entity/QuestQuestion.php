@@ -104,25 +104,32 @@ class QuestQuestion
     /**
      * @param ArrayCollection|Collection $answers
      */
-    public function setAnswers(ArrayCollection|Collection $answers): void
+    /*public function setAnswers(ArrayCollection|Collection $answers): void
     {
         $this->answers = $answers;
-    }
+    }*/
 
     /**
-     * @param QuestQuestionAnswer $answers
+     * @param QuestQuestionAnswer $answer
      * @return void
      */
-    public function addAnswers(QuestQuestionAnswer $answers): void
+    public function addAnswer(QuestQuestionAnswer $answer): void
     {
-        $answers->setQuestQuestion($this);
+        $answer->setQuestQuestion($this);
 
-        if (!$this->answers->contains($answers)) {
-            $this->answers->add($answers);
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
         }
     }
 
-
+    /**
+     * @param QuestQuestionAnswer $answer
+     * @return void
+     */
+    public function removeAnswer(QuestQuestionAnswer $answer): void
+    {
+        $this->answers->removeElement($answer);
+    }
 
     public function __toString(): string
     {

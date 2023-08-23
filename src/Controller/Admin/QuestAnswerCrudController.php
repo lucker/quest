@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\QuestQuestionAnswer;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 
 class QuestAnswerCrudController extends AbstractCrudController
 {
@@ -12,14 +14,12 @@ class QuestAnswerCrudController extends AbstractCrudController
         return QuestQuestionAnswer::class;
     }
 
-    /*
+
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            CollectionField::new('questQuestionAnswerVariants')
+                ->useEntryCrudForm(QuestQuestionAnswerVariantCrudController::class)
         ];
     }
-    */
 }
