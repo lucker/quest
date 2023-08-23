@@ -1,5 +1,13 @@
 version: "3.4"
 
+networks:
+  quest_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/24
+
 services:
   php:
     build:
@@ -10,6 +18,9 @@ services:
       # - php_socket:/var/run/php
       - ./:/var/www
       # - ./docker/php/conf.d/app.dev.ini:/usr/local/etc/php/conf.d/app.dev.ini:ro
+    networks:
+      quest_net:
+        ipv4_address: 172.19.0.2
 
   mysql:
     build:
@@ -25,6 +36,9 @@ services:
       MYSQL_PASSWORD: 'quest'
       # Password for root access
       MYSQL_ROOT_PASSWORD: 'quest'
+    networks:
+      quest_net:
+        ipv4_address: 172.19.0.4
 
   postgres:
     build:
@@ -37,6 +51,9 @@ services:
       POSTGRES_USER: quest
       POSTGRES_PASSWORD: quest
       POSTGRES_DB: quest
+    networks:
+      quest_net:
+        ipv4_address: 172.19.0.3
 
   nginx:
     build:
@@ -47,3 +64,6 @@ services:
       - ./:/var/www/
     ports:
       - "8080:80"
+    networks:
+      quest_net:
+        ipv4_address: 172.19.0.5
