@@ -54,9 +54,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Квесты', 'fas fa-list', Quest::class);
         yield MenuItem::linkToCrud('Вопросы', 'fas fa-list', QuestQuestion::class);
-        yield MenuItem::linkToCrud('Квесты ответы', 'fas fa-list', QuestQuestionAnswer::class);
+        //yield MenuItem::linkToCrud('Квесты ответы', 'fas fa-list', QuestQuestionAnswer::class);
         yield MenuItem::linkToCrud('Команды', 'fas fa-list', QuestTeam::class);
         yield MenuItem::linkToCrud('Участники квеста', 'fas fa-list', QuestTeamParticipant::class);
-        yield MenuItem::linkToCrud('Варианты ответа', 'fas fa-list', QuestQuestionAnswerVariant::class);
+        //yield MenuItem::linkToCrud('Варианты ответа', 'fas fa-list', QuestQuestionAnswerVariant::class);
     }
 }

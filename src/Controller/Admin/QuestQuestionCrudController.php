@@ -21,12 +21,11 @@ class QuestQuestionCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            //IdField::new('number'),
+            IdField::new('number'),
             TextEditorField::new('question'),
             AssociationField::new('quest'),
             CollectionField::new('answers')
                 ->useEntryCrudForm(QuestAnswerCrudController::class),
-            //TextEditorField::new('description'),
         ];
     }
 }

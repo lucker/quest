@@ -40,20 +40,20 @@ services:
       quest_net:
         ipv4_address: 172.19.0.4
 
-  postgres:
-    build:
-      context: .
-      dockerfile: docker/postgres/Dockerfile
-    restart: unless-stopped
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_USER: quest
-      POSTGRES_PASSWORD: quest
-      POSTGRES_DB: quest
-    networks:
-      quest_net:
-        ipv4_address: 172.19.0.3
+#  postgres:
+#    build:
+#      context: .
+#      dockerfile: docker/postgres/Dockerfile
+#    restart: unless-stopped
+#    ports:
+#      - '5432:5432'
+#    environment:
+#      POSTGRES_USER: quest
+#      POSTGRES_PASSWORD: quest
+#      POSTGRES_DB: quest
+#    networks:
+#      quest_net:
+#        ipv4_address: 172.19.0.3
 
   nginx:
     build:
