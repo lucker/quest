@@ -145,6 +145,7 @@ final class QuestController extends AbstractController
         $questTeamParticipantAnswers = $questTeamParticipantAnswerRepository->findBy([
             'questQuestion' => $questQuestion
         ]);
+        $reload = false;
 
         if (count($questTeamParticipantAnswers) == count($questAnswers)) {
             $nextQuestQuestion = $questQuestionRepository->findOneBy([
@@ -155,14 +156,14 @@ final class QuestController extends AbstractController
 
             $entityManager->persist($questTeamParticipant);
             $entityManager->flush();
-
+            $reload = true;
         }
 
 
         return new JsonResponse([
             'answer' => $answer,
             'correct' => $correct,
-            'reload' => true
+            'reload' => $reload
         ],Response::HTTP_OK);
     }
 

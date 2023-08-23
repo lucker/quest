@@ -33,12 +33,16 @@
                     console.log(data);
                     let correct = data.correct;
                     let answer = data.answer;
+                    let reload = data.reload;
                     if (correct) {
                         $("#correct_answers").append('<div class="text-success">' + answer + '</div>')
                     } else {
                         $("#wrong_answers").html('<div class="text-danger">' + answer  + '</div>')
                     }
-                    //location.reload();
+
+                    if (reload) {
+                        location.reload();
+                    }
                 }
             });
             e.preventDefault();
