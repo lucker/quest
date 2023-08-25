@@ -78,4 +78,9 @@ class QuestQuestionHint
     {
         $this->minutes = $minutes;
     }
+
+    public function __toString(): string
+    {
+        return $this->hint;
+    }
 }

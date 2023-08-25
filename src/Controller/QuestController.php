@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\QuestQuestion;
 use App\Entity\QuestTeamParticipant;
 use App\Entity\QuestTeamParticipantAnswer;
 use App\Repository\QuestAnswerRepository;
@@ -19,63 +20,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class QuestController extends AbstractController
 {
-    #[Route('/test', name: 'quest_test')]
-    public function test(): Response
-    {
-        return new JsonResponse([
-            'message' => 'Done',
-        ],
-            Response::HTTP_OK
-        );
-
-    }
-
-    #[Route('/quest/generate-user-link/{teamId}/{questId}', name: 'quest_generate-user-link')]
-    public function generateUserLink(
-        int $teamId,
-        int $questId,
-        QuestTeamRepository $questTeamRepository,
-        QuestRepository $questRepository,
-        QuestQuestionRepository $questQuestionRepository,
-        EntityManagerInterface $entityManager
-    )
-    {
-        $questTeam = $questTeamRepository->findOneBy([
-            'id' => $teamId
-        ]);
-
-        $quest = $questRepository->findOneBy([
-            'id' => $questId
-        ]);
-
-        $questQuestion = $questQuestionRepository->findOneBy([
-            'quest' => $quest,
-            'number'   => 0
-        ]);
-
-        $hash = $this->generateRandomString(15);
-        $questTeamParticipant = new QuestTeamParticipant();
-        $questTeamParticipant->setQuestTeam($questTeam);
-        $questTeamParticipant->setHash($hash);
-        $questTeamParticipant->setQuest($quest);
-        $questTeamParticipant->setQuestQuestion($questQuestion);
-
-        $entityManager->persist($questTeamParticipant);
-        $entityManager->flush();
-
-        return new JsonResponse([
-                'message' => 'Done',
-            ],
-            Response::HTTP_OK
-        );
-
-    }
-
     #[Route('/quest/{hash}', name: 'quest_index')]
     public function index(
         string $hash,
         Request $request,
-        QuestTeamParticipantRepository $questTeamParticipantRepository
+        QuestTeamParticipantRepository $questTeamParticipantRepository,
+        QuestTeamParticipantAnswerRepository $questTeamParticipantAnswerRepository,
     ): Response
     {
         $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
@@ -83,14 +33,57 @@ final class QuestController extends AbstractController
         ]);
         $questQuestion = $questTeamParticipant->getQuestQuestion();
 
+        $questTeamParticipantAnswers = $questTeamParticipantAnswerRepository->findBy([
+            'questTeamParticipant' => $questTeamParticipant,
+            'questQuestion' => $questQuestion
+        ]);
+
+        $correctAnswers = [];
+        foreach ($questTeamParticipantAnswers as $answer) {
+            $correctAnswers[] = $answer->getAnswer();
+        }
+
         if ($questQuestion == null) {
             return $this->render('quest/success.html.twig');
         }
 
         return $this->render('quest/index.html.twig', [
             'questTeamParticipant' => $questTeamParticipant,
+            'questQuestion' => $questQuestion,
+            'hash' => $hash,
+            'correctAnswers' => $correctAnswers,
+        ]);
+    }
+
+    #[Route('/check/{hash}/{questQuestionId}', name: 'quest_check')]
+    public function check(
+        string $hash,
+        int $questQuestionId,
+        QuestTeamParticipantAnswerRepository $questTeamParticipantAnswerRepository,
+        QuestTeamParticipantRepository $questTeamParticipantRepository,
+        QuestQuestionRepository $questQuestionRepository
+    ) {
+        $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
+            'hash' => $hash
+        ]);
+
+        $questQuestion = $questQuestionRepository->findOneBy([
+            'id' => $questQuestionId
+        ]);
+
+        $questTeamParticipantAnswers = $questTeamParticipantAnswerRepository->findBy([
+            'questTeamParticipant' => $questTeamParticipant,
             'questQuestion' => $questQuestion
         ]);
+
+        $correctAnswers = [];
+        foreach ($questTeamParticipantAnswers as $answer) {
+            $correctAnswers[] = $answer->getAnswer();
+        }
+
+        return new JsonResponse([
+            'correctAnswers' => $correctAnswers,
+        ],Response::HTTP_OK);
     }
 
     #[Route('/check-answer', name: 'quest_check_answer')]
@@ -143,8 +136,13 @@ final class QuestController extends AbstractController
         }
 
         $questTeamParticipantAnswers = $questTeamParticipantAnswerRepository->findBy([
+            'questTeamParticipant' => $questTeamParticipant,
             'questQuestion' => $questQuestion
         ]);
+        $correctAnswers = [];
+        foreach ($questTeamParticipantAnswers as $questTeamParticipantAnswer) {
+            $correctAnswers[] = $questTeamParticipantAnswer->getAnswer();
+        }
         $reload = false;
 
         if (count($questTeamParticipantAnswers) == count($questAnswers)) {
@@ -161,8 +159,9 @@ final class QuestController extends AbstractController
 
 
         return new JsonResponse([
-            'answer' => $answer,
             'correct' => $correct,
+            'answer' => $answer,
+            'correctAnswers' => $correctAnswers,
             'reload' => $reload
         ],Response::HTTP_OK);
     }

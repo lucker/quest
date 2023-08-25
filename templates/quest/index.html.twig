@@ -13,13 +13,15 @@
         </div>
     </form>
     <div id="correct_answers">
-
+        {% for correctAnswer in correctAnswers %}
+            <div class="text-success">{{ correctAnswer }}</div>
+        {% endfor %}
     </div>
     <div id="wrong_answers">
 
     </div>
     <div class="col-sm-12">
-        {{ questQuestion.question }}
+        {{ questQuestion.question|raw }}
     </div>
     <script>
         $("form").on("submit", function (e) {
@@ -34,11 +36,16 @@
                     let correct = data.correct;
                     let answer = data.answer;
                     let reload = data.reload;
-                    if (correct) {
-                        $("#correct_answers").append('<div class="text-success">' + answer + '</div>')
-                    } else {
+                    if (!correct) {
                         $("#wrong_answers").html('<div class="text-danger">' + answer  + '</div>')
                     }
+
+                    let correctAnswers = data.correctAnswers;
+                    let answersHtml = '';
+                    for (let i = 0; i < correctAnswers.length; i++) {
+                        answersHtml = answersHtml + '<div class="text-success">' + correctAnswers[i] + '</div>';
+                    }
+                    $("#correct_answers").html('<div class="text-success">' + answersHtml + '</div>');
 
                     if (reload) {
                         location.reload();
@@ -47,5 +54,20 @@
             });
             e.preventDefault();
         });
+
+        setInterval(function() {
+            $.ajax({
+                type: "GET",
+                url: "/en/check/{{ hash }}/{{ questQuestion.id }}",
+                success: function (data, status) {
+                    let correctAnswers = data.correctAnswers;
+                    let answersHtml = '';
+                    for (let i = 0; i < correctAnswers.length; i++) {
+                        answersHtml = answersHtml + '<div class="text-success">' + correctAnswers[i] + '</div>';
+                    }
+                    $("#correct_answers").html('<div class="text-success">' + answersHtml + '</div>');
+                }
+            });
+        }, 1000);
     </script>
 {% endblock %}
