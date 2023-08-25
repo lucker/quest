@@ -2,10 +2,12 @@
 namespace App\Controller;
 
 use App\Entity\QuestQuestion;
+use App\Entity\QuestQuestionHint;
 use App\Entity\QuestTeamParticipant;
 use App\Entity\QuestTeamParticipantAnswer;
 use App\Repository\QuestAnswerRepository;
 use App\Repository\QuestAnswerVariantRepository;
+use App\Repository\QuestQuestionHintRepository;
 use App\Repository\QuestQuestionRepository;
 use App\Repository\QuestRepository;
 use App\Repository\QuestTeamParticipantAnswerRepository;
@@ -26,6 +28,7 @@ final class QuestController extends AbstractController
         Request $request,
         QuestTeamParticipantRepository $questTeamParticipantRepository,
         QuestTeamParticipantAnswerRepository $questTeamParticipantAnswerRepository,
+        QuestQuestionHintRepository $questQuestionHint,
     ): Response
     {
         $questTeamParticipant = $questTeamParticipantRepository->findOneBy([
@@ -35,6 +38,10 @@ final class QuestController extends AbstractController
 
         $questTeamParticipantAnswers = $questTeamParticipantAnswerRepository->findBy([
             'questTeamParticipant' => $questTeamParticipant,
+            'questQuestion' => $questQuestion
+        ]);
+
+        $questionHints = $questQuestionHint->findBy([
             'questQuestion' => $questQuestion
         ]);
 
@@ -52,6 +59,7 @@ final class QuestController extends AbstractController
             'questQuestion' => $questQuestion,
             'hash' => $hash,
             'correctAnswers' => $correctAnswers,
+            'questionHints' => $questionHints
         ]);
     }
 
