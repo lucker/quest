@@ -23,6 +23,7 @@
     <div class="col-sm-12">
         {{ questQuestion.question|raw }}
     </div>
+    <div id="demo">gfg</div>
     <div class="col-sm-12">
         {% for questionHint in questionHints %}
             <div>Hint {{ loop.index0 + 1 }}</div>
@@ -61,7 +62,7 @@
             e.preventDefault();
         });
 
-        setInterval(function() {
+        /*setInterval(function() {
             $.ajax({
                 type: "GET",
                 url: "/en/check/{{ hash }}/{{ questQuestion.id }}",
@@ -74,6 +75,52 @@
                     $("#correct_answers").html('<div class="text-success">' + answersHtml + '</div>');
                 }
             });
-        }, 1000);
+        }, 1000);*/
+
+        // Set the date we're counting down to
+        var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
+
+        // Update the count down every 1 second
+        /*var x = setInterval(function() {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="demo"
+            document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s ";
+
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("demo").innerHTML = "EXPIRED";
+            }
+        }, 1000);*/
+
+        var conn = new WebSocket('ws://172.19.0.2:3001');
+        conn.onopen = function(e) {
+            console.log("Connection established!");
+        };
+
+        conn.onmessage = function(e) {
+            console.log(e.data);
+        };
+
+        conn.onerror = function(e) {
+            console.log(e);
+        }
+
+        /*setInterval(function() {
+            conn.send('Hello World!2');
+        }, 1000);*/
     </script>
 {% endblock %}

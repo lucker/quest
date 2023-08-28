@@ -15,6 +15,7 @@
     "require": {
         "php": ">=8.1",
         "ext-pdo_sqlite": "*",
+        "cboden/ratchet": "^0.4.4",
         "doctrine/dbal": "^3.1",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.0",
